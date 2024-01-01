@@ -26,7 +26,7 @@ Purpose: This step creates a Python file within the Airflow DAGs directory. This
 
 3. ```Importing PythonOperator```: This class represents a task within a DAG and is used to define task logic and dependencies.
 
-```python
+```
 from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.python import PythonOperator

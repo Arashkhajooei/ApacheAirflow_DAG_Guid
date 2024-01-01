@@ -99,3 +99,39 @@ task1 >> task2
 ```
 ### Running the DAG
 Start the Airflow scheduler to execute the DAG according to the specified schedule.
+
+
+## here's a complete example of a DAG file in Python:
+```python
+from datetime import datetime, timedelta
+from airflow import DAG
+from airflow.operators.python import PythonOperator
+
+# Define default arguments for the DAG
+default_args = {
+    'owner': 'airflow',
+    'start_date': airflow.utils.dates.days_ago(1),
+    'schedule_interval': '@daily',
+}
+
+# Define a function for the first task
+def task1_function():
+    print("Executing task1_function...")
+    return 'Task 1 completed successfully'
+
+# Define a function for the second task
+def task2_function():
+    print("Executing task2_function...")
+    return 'Task 2 completed successfully'
+
+# Create a DAG object
+dag = DAG('my_dag', default_args=default_args, schedule_interval='@daily')
+
+# Create tasks and specify their dependencies
+task1 = PythonOperator(task_id='task1', python_callable=task1_function, dag=dag)
+task2 = PythonOperator(task_id='task2', python_callable=task2_function, dag=dag)
+
+# Set the dependency between tasks
+task1 >> task2
+
+```

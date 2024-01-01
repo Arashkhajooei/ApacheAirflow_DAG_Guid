@@ -16,15 +16,15 @@ pip install apache-airflow
 ### Creating a Python File
 
 1. Create a Python file within the Airflow DAGs directory. This directory is typically set in the Airflow configuration file (airflow.cfg).
-Purpose: This step creates a Python file within the Airflow DAGs directory. This directory is typically configured in the Airflow configuration file (airflow.cfg). The DAG file will contain the DAG definition and task logic.
+Purpose: This step creates a Python file within the Airflow DAGs directory. This directory is typically configured in the Airflow configuration file ```(airflow.cfg)```. The DAG file will contain the DAG definition and task logic.
 
 ### Importing the Essential Modules
 
-1. Importing datetime: This module provides functions for working with dates and times, which is essential for scheduling DAG runs.
+1. ```Importing datetime```: This module provides functions for working with dates and times, which is essential for scheduling DAG runs.
 
-2. Importing airflow: This module provides classes and functions for defining and managing DAGs.
+2. ```Importing airflow```: This module provides classes and functions for defining and managing DAGs.
 
-3. Importing PythonOperator: This class represents a task within a DAG and is used to define task logic and dependencies.
+3. ```Importing PythonOperator```: This class represents a task within a DAG and is used to define task logic and dependencies.
 
 ```python
 from datetime import datetime, timedelta
@@ -48,13 +48,13 @@ default_args = {
 
 Instantiate the DAG object, providing the DAG ID, schedule information, and default arguments:
 
-Creating the DAG object: This step instantiates the DAG object using the ```python DAG()``` class. The DAG object represents the overall workflow and manages the execution of tasks.
+```Creating the DAG object:``` This step instantiates the DAG object using the ```DAG()``` class. The DAG object represents the overall workflow and manages the execution of tasks.
 
-DAG ID: This specifies a unique identifier for the DAG. It should be descriptive and consistent across DAGs.
+```DAG ID:``` This specifies a unique identifier for the DAG. It should be descriptive and consistent across DAGs.
 
-Default Arguments: This passes the default arguments defined previously to the DAG object.
+```Default Arguments:``` This passes the default arguments defined previously to the DAG object.
 
-Schedule Interval: This specifies the schedule interval for the DAG, which is defined in the default arguments dictionary.
+```Schedule Interval:``` This specifies the schedule interval for the DAG, which is defined in the default arguments dictionary.
 
 ```python
 dag = DAG('my_dag', default_args=default_args, schedule_interval='@daily')
@@ -135,3 +135,4 @@ task2 = PythonOperator(task_id='task2', python_callable=task2_function, dag=dag)
 task1 >> task2
 
 ```
+Please keep in mind that the DAG object name should be the same as filename. ```'my_dag'```

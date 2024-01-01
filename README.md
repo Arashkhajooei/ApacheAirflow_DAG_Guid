@@ -139,3 +139,132 @@ task1 >> task2
 Please keep in mind that the DAG object name should be the same as filename. ```'my_dag'```
 
 The string ```*/5 * * * *``` represents a cron expression, which is a syntax used to schedule tasks at specific times or intervals. In this case, the expression ```*/5 * * * *``` indicates that the task should be executed every five minutes. The asterisk (*) wildcard in the minutes field means "every minute," and the slash (/) indicates that the task should be executed every five minutes.
+
+### Another example of our server automation DAG code : 
+
+```
+from datetime import datetime, timedelta
+from airflow import DAG
+from airflow.operators.python_operator import PythonOperator
+from clickhouse_driver import Client
+import pymysql
+from sqlalchemy import create_engine
+import os
+import psutil
+import time
+import shutil
+from pathlib import Path
+import pandas as pd
+import numpy as np
+
+default_args = {
+    'owner': 'arash',
+    'depends_on_past': False,
+    'start_date': datetime(2023, 11, 15),
+    'retries': 10,
+    'retry_delay': timedelta(seconds=30),
+}
+
+dag = DAG('Server_automation',catchup=False, default_args=default_args, description='Your DAG description', schedule_interval='@daily')
+
+def execute_all_clickhouse_queries():
+    # Define your user, password, and host here
+    user = 'root'
+    password = 'Arash1648195'
+    host = 'mysql_container2'
+    database = 'pulse_check'
+    engine = create_engine("mysql+pymysql://" + user + ":" + password + "@" + host + "/" + database)
+
+    # Define your ClickHouse client here
+    clickhouse_client = Client(host='172.21.16.1', port=9000, user='arash_khajooei', password='ABMu%Tfz3Cx#ob@369ES')
+
+    execute_clickhouse_queries = [
+        ("/opt/airflow/dags/pc_daily_query_v4.1.sql", "daily_view", 100000, 10),
+        ("/opt/airflow/dags/pc_hourly_query_v4.1.sql", "hourly_view", 10000, 10),
+        ("/opt/airflow/dags/pc_distance_query_v4.1.sql", "distance_view", 100000, 10),
+        ("/opt/airflow/dags/pc_district_query_v3.sql", "district_view", 100000, 10)
+    ]
+
+    for sql_file, table_name, block_size, retries in execute_clickhouse_queries:
+        for _ in range(retries):
+            try:
+                with open(sql_file, "r") as file:
+                    query = file.read()
+
+                result, columns = clickhouse_client.execute(query, with_column_types=True, settings={'max_block_size': block_size})
+                data = pd.DataFrame(result, columns=[col[0] for col in columns])
+
+                new_columns = [col.split('.')[1] if '.' in col else col for col in data.columns]
+                data.columns = new_columns
+
+                for col in data.columns:
+                    if sum(data[col] == np.inf) > 0:
+                        print(f"Column '{col}' has {sum(data[col] == np.inf)} inf values.")
+
+                for col in data.columns:
+                    if data[col].dtype != 'O':
+                        data[col] = data[col].apply(lambda x: np.NaN if x == np.inf else x)
+
+                data.to_sql(table_name, con=engine, if_exists='replace', index=False, chunksize=block_size)
+
+                print(f"Query for {table_name} completed successfully.")
+                break  # Exit the retry loop if the query was successful
+            except Exception as e:
+                print(f"Error executing query for {table_name}: {str(e)}")
+                time.sleep(5)  # Wait for 5 seconds before retrying
+
+execute_all_queries_task = PythonOperator(
+    task_id='execute_all_queries',
+    python_callable=execute_all_clickhouse_queries,
+    dag=dag
+)
+
+execute_all_queries_task
+
+```
+
+# Explanation of Server Automation DAG
+
+This DAG (`Server_automation`) in Apache Airflow is designed to execute multiple ClickHouse queries and push the results into a MySQL database (`pulse_check`). Let's break down the key components and steps within this DAG:
+
+## Imports and Default Arguments
+
+The DAG starts by importing necessary modules and defining default arguments like `owner`, `start_date`, `retries`, and `retry_delay`.
+
+## DAG Configuration
+
+The DAG itself (`Server_automation`) is instantiated with specific parameters:
+- `catchup=False`: This ensures that Airflow doesn't attempt to run DAGs for time intervals in the past.
+- `default_args=default_args`: This parameter includes the default arguments defined earlier.
+- `description='Your DAG description'`: Description of the DAG (placeholder text, can be updated).
+- `schedule_interval='@daily'`: The DAG is scheduled to run daily.
+
+## Task: execute_all_clickhouse_queries()
+
+This task is defined as a Python function (`execute_all_clickhouse_queries`) that handles executing ClickHouse queries and pushing results into MySQL.
+
+### ClickHouse and MySQL Configuration
+
+- `user`, `password`, `host`, and `database` variables: Define the credentials and database information for MySQL.
+- `clickhouse_client`: Configures the ClickHouse client with the necessary connection details.
+  
+### ClickHouse Queries Execution
+
+- `execute_clickhouse_queries`: A list of tuples containing SQL file paths, table names, block sizes, and retry counts.
+  
+### Looping Through Queries
+
+The task iterates through each tuple in `execute_clickhouse_queries`:
+- Opens the SQL file, reads the query, and executes it using the ClickHouse client.
+- If successful, it converts the result into a Pandas DataFrame, handles infinite values, converts infinities to NaN, and pushes the data into the respective MySQL table.
+- Retries the execution in case of failure, with a delay of 5 seconds between retries.
+
+### PythonOperator Task
+
+- `execute_all_queries_task`: Defines a `PythonOperator` task (`execute_all_queries`) using the defined Python function (`execute_all_clickhouse_queries`).
+
+## Conclusion
+
+This DAG automates the execution of multiple ClickHouse queries and stores the results in a MySQL database. Customization of credentials, query paths, or retry settings can be done based on specific project requirements.
+
+

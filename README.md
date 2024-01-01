@@ -20,7 +20,11 @@ Purpose: This step creates a Python file within the Airflow DAGs directory. This
 
 ### Importing the Essential Modules
 
-1. Import the required modules for working with Airflow DAGs:
+1. Importing datetime: This module provides functions for working with dates and times, which is essential for scheduling DAG runs.
+
+2. Importing airflow: This module provides classes and functions for defining and managing DAGs.
+
+3. Importing PythonOperator: This class represents a task within a DAG and is used to define task logic and dependencies.
 
 ```python
 from datetime import datetime, timedelta
@@ -39,15 +43,6 @@ default_args = {
     'schedule_interval': '@daily',
 }
 ```
-Importing the Essential Modules:
-
-1. Importing datetime: This module provides functions for working with dates and times, which is essential for scheduling DAG runs.
-
-2. Importing airflow: This module provides classes and functions for defining and managing DAGs.
-
-3. Importing PythonOperator: This class represents a task within a DAG and is used to define task logic and dependencies.
-
-
 
 ### Instantiating the DAG
 

@@ -101,7 +101,7 @@ task1 >> task2
 Start the Airflow scheduler to execute the DAG according to the specified schedule.
 
 
-## here's a complete example of a DAG file in Python:
+## Here's a complete example of a DAG file in Python:
 ```python
 from datetime import datetime, timedelta
 from airflow import DAG

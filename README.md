@@ -26,7 +26,7 @@ Purpose: This step creates a Python file within the Airflow DAGs directory. This
 
 3. ```Importing PythonOperator```: This class represents a task within a DAG and is used to define task logic and dependencies.
 
-```
+```python
 from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.python import PythonOperator
@@ -36,7 +36,6 @@ from airflow.operators.python import PythonOperator
 
 1. Set default arguments for the DAG, specifying common settings like start date, schedule frequency, and owner:
 
-python
 default_args = {
     'owner': 'airflow',
     'start_date': airflow.utils.dates.days_ago(1),

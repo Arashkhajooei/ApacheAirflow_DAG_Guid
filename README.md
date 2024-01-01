@@ -48,7 +48,7 @@ default_args = {
 
 Instantiate the DAG object, providing the DAG ID, schedule information, and default arguments:
 
-Creating the DAG object: This step instantiates the DAG object using the DAG() class. The DAG object represents the overall workflow and manages the execution of tasks.
+Creating the DAG object: This step instantiates the DAG object using the ```python DAG()``` class. The DAG object represents the overall workflow and manages the execution of tasks.
 
 DAG ID: This specifies a unique identifier for the DAG. It should be descriptive and consistent across DAGs.
 

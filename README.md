@@ -63,11 +63,11 @@ Defining Default Arguments:
 
 Setting default arguments: This section defines a dictionary of default arguments that can be applied to all tasks within the DAG. Common arguments include owner, start_date, and schedule_interval.
 
-Owner: This specifies the owner of the DAG, typically the person or team responsible for maintaining it.
+```Owner```: This specifies the owner of the DAG, typically the person or team responsible for maintaining it.
 
-Start Date: This defines the starting date for the DAG, from which the schedule interval will be calculated.
+```Start Date```: This defines the starting date for the DAG, from which the schedule interval will be calculated.
 
-Schedule Interval: This specifies the frequency at which the DAG should be executed. Common intervals include @daily, @hourly, and @once, indicating daily, hourly, and one-time execution, respectively.
+```Schedule Interval```: This specifies the frequency at which the DAG should be executed. Common intervals include @daily, @hourly, and @once, indicating daily, hourly, and one-time execution, respectively.
 
 
 

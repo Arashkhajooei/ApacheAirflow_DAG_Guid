@@ -142,7 +142,7 @@ The string ```*/5 * * * *``` represents a cron expression, which is a syntax use
 
 ### Another example of our server automation DAG code : 
 
-```
+```python
 from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
@@ -170,13 +170,13 @@ dag = DAG('Server_automation',catchup=False, default_args=default_args, descript
 def execute_all_clickhouse_queries():
     # Define your user, password, and host here
     user = 'root'
-    password = 'Arash1648195'
-    host = 'mysql_container2'
+    password = '****'
+    host = '****'
     database = 'pulse_check'
     engine = create_engine("mysql+pymysql://" + user + ":" + password + "@" + host + "/" + database)
 
     # Define your ClickHouse client here
-    clickhouse_client = Client(host='172.21.16.1', port=9000, user='arash_khajooei', password='ABMu%Tfz3Cx#ob@369ES')
+    clickhouse_client = Client(host='172.21.16.1', port=9000, user='your_clickhouse_user', password='your_clickhouse_pass')
 
     execute_clickhouse_queries = [
         ("/opt/airflow/dags/pc_daily_query_v4.1.sql", "daily_view", 100000, 10),

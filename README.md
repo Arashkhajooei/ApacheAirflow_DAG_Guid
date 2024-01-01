@@ -137,3 +137,4 @@ task1 >> task2
 
 ```
 Please keep in mind that the DAG object name should be the same as filename. ```'my_dag'```
+The string ```*/5 * * * *``` represents a cron expression, which is a syntax used to schedule tasks at specific times or intervals. In this case, the expression ```*/5 * * * *``` indicates that the task should be executed every five minutes. The asterisk (*) wildcard in the minutes field means "every minute," and the slash (/) indicates that the task should be executed every five minutes.

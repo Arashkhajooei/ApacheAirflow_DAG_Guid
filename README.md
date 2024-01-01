@@ -9,6 +9,10 @@ Apache Airflow is a powerful workflow orchestration platform that helps in manag
 ### Prerequisites
 Ensure that you have Apache Airflow installed and running before creating a DAG file. You can install Airflow via pip:
 
+```python
+pip install apache-airflow
+```
+
 ### Creating a Python File
 
 1. Create a Python file within the Airflow DAGs directory. This directory is typically set in the Airflow configuration file (airflow.cfg).

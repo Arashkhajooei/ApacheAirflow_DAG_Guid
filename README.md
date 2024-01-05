@@ -6,6 +6,10 @@ Apache Airflow is a powerful workflow orchestration platform that helps in manag
 
 ![image](https://github.com/Arashkhajooei/ApacheAirflow_DAG_Guid/blob/main/DAG.jpg?raw=true)
 
+### Directed acyclic graph
+In mathematics, particularly graph theory, and computer science, a directed acyclic graph is a directed graph with no directed cycles. That is, it consists of vertices and edges, with each edge directed from one vertex to another, such that following those directions will never form a closed loop. 
+
+
 ### Prerequisites
 Ensure that you have Apache Airflow installed and running before creating a DAG file. You can install Airflow via pip:
 

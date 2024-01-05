@@ -4,7 +4,7 @@
 
 Apache Airflow is a powerful workflow orchestration platform that helps in managing complex data pipelines and tasks. DAGs, or Directed Acyclic Graphs, are the building blocks of Airflow, representing the workflow of tasks to be executed. DAG files are Python scripts that define the DAG structure, including tasks, dependencies, and scheduling information.
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Arashkhajooei/ApacheAirflow_DAG_Guid/blob/main/DAG.jpg?raw=true)
 
 ### Prerequisites
 Ensure that you have Apache Airflow installed and running before creating a DAG file. You can install Airflow via pip:
